@@ -9,7 +9,24 @@
 }
 
 @font-face {
-  font-family: 'Sacramento';
-  src: url('/fonts/Sacramento-Regular.ttf') format('truetype');
-  font-weight: 100 900;
+  font-family: 'Satisfy';
+  src: url('/fonts/Satisfy-Regular.ttf') format('truetype');
 }
+
+
+/* Hide scrollbar for WebKit-based browsers */
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+/* Hide scrollbar for Firefox */
+html, body {
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide scrollbar for Internet Explorer 10+ and Edge */
+html, body {
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
