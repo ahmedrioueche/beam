@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`antialiased font-f1 scrollbar-hide`}>
+      <body className={`antialiased font-f1 scrollbar-hide bg-light-background dark:bg-dark-background`}>
         <NextAuthProvider>
           <ThemeProvider>
               {children}
