@@ -8,7 +8,7 @@ import AboutStream from "./AboutStream";
 const Stream: React.FC<{ id: number; type: streamViewType }> = ({ id, type }) => {
   const streamer: User = {
     name: "CoolStreamer123",
-    isLive: false,
+    isLive: true,
     avatarUrl: "/images/cat.jpg",
     followersCount: 1023,
   };

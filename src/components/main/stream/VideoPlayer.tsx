@@ -27,7 +27,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ streamer, title, isLive }) =>
       <div className="relative aspect-video bg-black">
         {/* Placeholder for actual video */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-2xl text-dark-text-secondary">Video Player</span>
+          <img src="/images/spiderman.webp" alt="Video placeholder" className="absolute inset-0 object-cover w-full h-full" />
         </div>
         
         {/* Video Controls */}
