@@ -1,6 +1,6 @@
 // Profile.tsx
 import React from 'react';
-import StreamCard from './StreamCard';
+import StreamCard from '../stream/StreamCard';
 import { Stream, User } from '@/lib/types';
 import { dict } from '@/lib/dict';
 import { FaEye, FaHeart, FaVideo } from 'react-icons/fa';
@@ -120,7 +120,7 @@ const Profile: React.FC<ProfileProps> = ({ id }) => {
               {dict[selectedLanguage].currentLiveStream}
             </h3>
           </div>  
-          <StreamCard type={isCurrentUserProfile? "owner" : "visitor"} stream={liveStream} />
+          <StreamCard type={isCurrentUserProfile? "owner" : "visitor"} stream={liveStream} noScaleOnHover={true} />
         </div>
       )}
 

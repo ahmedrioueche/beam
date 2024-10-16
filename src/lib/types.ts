@@ -40,6 +40,9 @@ export interface Stream {
   duration: string;
   isLive: boolean;
   topic: string;
+  ingressId?: string;
+  serverUrl?: string;
+  streamKey?: string;
 }
 
 export type streamViewType = "userView" | "streamerView";

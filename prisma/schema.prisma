@@ -1,0 +1,80 @@
+// schema.prisma
+
+datasource db {
+  provider = "postgresql" // Change to your preferred database provider
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Define the generator for the Prisma Client
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Notification Model
+model Notif {
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String?  // Optional field
+  type        String?  // Optional field, can specify default value
+  description String?  // Optional field
+  senderId    Int?     // Optional foreign key reference
+  receiverId  Int?     // Optional foreign key reference
+  parentId    Int?     // Optional field for nested notifications
+  createdAt   DateTime @default(now())
+  isRead      Boolean? @default(false) // Default to false
+  icon        String?  // Optional field
+
+  // Relationships
+  sender      User?    @relation("SentNotifications", fields: [senderId], references: [id])
+  receiver    User?    @relation("ReceivedNotifications", fields: [receiverId], references: [id])
+}
+
+// User Model
+model User {
+  id                   Int      @id @default(autoincrement())
+  email                String   @unique
+  password             String
+  createdAt            DateTime @default(now())
+  name                 String?   
+  isLive               Boolean? @default(false) // Default to false
+  avatarUrl            String?
+  followersCount       Int?     @default(0) // Default to 0
+  viewsPerStreamCount  Int?     @default(0) // Default to 0
+
+  // Relationships
+  streams  Stream[]   @relation("Streamer")
+  messages Message[]  @relation("UserMessages")
+  sentNotifs Notif[]  @relation("SentNotifications")
+  receivedNotifs Notif[] @relation("ReceivedNotifications")
+}
+
+// Message Model
+model Message {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  timestamp DateTime @default(now())
+  content   String
+
+  // Relationships
+  user      User     @relation("UserMessages", fields: [userId], references: [id])
+}
+
+// Stream Model
+model Stream {
+  id          Int      @id @default(autoincrement())
+  streamerId  Int
+  title       String
+  info        String?  // Optional field
+  thumbnail   String
+  viewerCount Int      @default(0) // Default to 0
+  duration    String
+  isLive      Boolean  @default(false) // Default to false
+  topic       String
+  ingressId   String?  // Optional field
+  serverUrl   String?  // Optional field
+  streamKey   String?  // Optional field
+
+  // Relationships
+  streamer    User     @relation("Streamer", fields: [streamerId], references: [id])
+}

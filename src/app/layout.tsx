@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import NextAuthProvider from "./context/NextAuthProvider";
 import { ThemeProvider } from "./context/ThemeContext";
+import { Provider } from 'react-redux';
+import store from '../lib/store';
 
 export const metadata: Metadata = {
   title: "Beam",
@@ -20,9 +22,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`antialiased font-f1 scrollbar-hide bg-light-background dark:bg-dark-background`}>
         <NextAuthProvider>
-          <ThemeProvider>
-              {children}
-          </ThemeProvider>
+            <ThemeProvider>
+                {children}
+            </ThemeProvider>
         </NextAuthProvider>
       </body>
     </html>

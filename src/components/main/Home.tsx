@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import StreamCard from './StreamCard';
+import StreamCard from './stream/StreamCard';
 import { Stream } from '@/lib/types';
 import { dict } from '@/lib/dict';
 import { useRouter } from 'next/navigation';
@@ -19,8 +19,8 @@ const streams: Stream[] = [
   },
   {
     id: 2,
-    thumbnail: '/images/stream2.jpg',
-    streamer: { id: 2, name: 'ChefAlice', avatarUrl: '/images/logo2.png' },
+    thumbnail: '/images/chef.jpg',
+    streamer: { id: 2, name: 'ChefAlice', avatarUrl: '/images/alice.webp' },
     title: 'Cooking with Chef Alice',
     info: 'Learn to cook delicious meals with Chef Alice.',
     viewerCount: 56,
@@ -30,8 +30,8 @@ const streams: Stream[] = [
   },
   {
     id: 3,
-    thumbnail: '/images/stream3.jpg',
-    streamer: { id: 3, name: 'MusicianMike', avatarUrl: '/images/logo3.png' },
+    thumbnail: '/images/jam.jpg',
+    streamer: { id: 3, name: 'MusicianMike', avatarUrl: '/images/mike.jpg' },
     title: 'Music Jam Session',
     info: 'Enjoy a live music jam session with our talented musicians.',
     viewerCount: 103,
@@ -41,8 +41,8 @@ const streams: Stream[] = [
   },
   {
     id: 4,
-    thumbnail: '/images/stream4.jpg',
-    streamer: { id: 4, name: 'TechGuy', avatarUrl: '/images/logo4.png' },
+    thumbnail: '/images/teck.jpg',
+    streamer: { id: 4, name: 'TechGuy', avatarUrl: '/images/ike.jpg' },
     title: 'Tech Talk Live',
     info: 'Discussing the latest in tech trends and news.',
     viewerCount: 65,

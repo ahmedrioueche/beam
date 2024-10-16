@@ -4,6 +4,7 @@ import { User } from '@/lib/types';
 import { useRouter, usePathname } from 'next/navigation';
 import { FaTachometerAlt, FaSignOutAlt, FaCog, FaBell, FaExclamationCircle, FaKey, FaVideo } from 'react-icons/fa';
 import { FaPeopleGroup } from 'react-icons/fa6';
+import { signOut } from 'next-auth/react';
 
 const MobileSidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -116,9 +117,13 @@ const users: User[] = [
     router.push(`/main/profile/${user.id}`);
     onClose();
   }
+
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: "/api/auth/signout" });
+  }
   
   return (
-    <div className={`fixed left-0 top-0 w-64 h-full bg-light-surface dark:bg-dark-surface shadow-lg transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300`}>
+    <div className={`fixed left-0 top-0 w-64 h-full bg-light-surface dark:bg-dark-surface shadow-lg transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 overflow-y-scroll scrollbar-hide`}>
       <div ref={dropdownRef} className="p-4 text-light-text-primary dark:text-dark-text-primary">
         {/* Top Section */}
         <div onClick={handleProfileClick} className='flex items-center mb-4 cursor-pointer'>
@@ -271,7 +276,7 @@ const users: User[] = [
             </div>
           </div>
 
-          <div onClick={() => handleLinkClick("logout")} className="p-2 py-3 hover:bg-light-primary dark:hover:bg-dark-primary cursor-pointer">
+          <div onClick={() => handleLogout()} className="p-2 py-3 hover:bg-light-primary dark:hover:bg-dark-primary cursor-pointer">
             <div className="flex items-center">
               <FaSignOutAlt className="w-6 h-6 mr-3" />
               <h3 className="text-md font-normal">{dict[selectedLanguage].logout}</h3>

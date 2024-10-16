@@ -4,6 +4,9 @@ import AppNavbar from '@/components/main/AppNavbar';
 import SideMenu from '@/components/main/SideMenu';
 import SkeletonHome from '@/components/main/SkeletonHome';
 import React, { lazy, useEffect, useState, Suspense } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import Loading from '@/components/Loading';
 
 interface PageProps {
   params: {
@@ -13,28 +16,40 @@ interface PageProps {
 
 const Page = ({ params }: PageProps) => {
   const { slug } = params;  
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/auth/login');
+    }
+ 
+  }, [status, router]);
+
+  if (status === 'loading') return <SkeletonHome/>;
+  if (!session) return <Loading />;
+
   const [Component, setComponent] = useState<React.LazyExoticComponent<React.FC<any>> | null>(null);
   console.log("slug", slug)
   useEffect(() => {
     switch (slug) {
       case "stream":
-        setComponent(() => lazy(() => import('@/components/main/Dashboard')));
+        setComponent(() => lazy(() => import('@/components/main/dashboard/Dashboard')));
         break;
       case "keys":
-        setComponent(() => lazy(() => import('@/components/main/Keys')));
+        setComponent(() => lazy(() => import('@/components/main/dashboard/Keys')));
         break;
       case "settings":
-        setComponent(() => lazy(() => import('@/components/main/DashboardSettings')));
+        setComponent(() => lazy(() => import('@/components/main/dashboard/DashboardSettings')));
         break;
       case "community":
-        setComponent(() => lazy(() => import('@/components/main/Community')));
+        setComponent(() => lazy(() => import('@/components/main/dashboard/Community')));
         break;
       default:
         setComponent(null); 
     }
   }, [slug]);
 
-  return (
+  return session? (
     <div className="flex flex-col min-h-screen">
       {/* Navbar at the top */}
       <AppNavbar />
@@ -59,6 +74,8 @@ const Page = ({ params }: PageProps) => {
       {/* Footer remains at the bottom */}
       <AppFooter />
     </div>
+  ) : (
+    <Loading/>
   );
 }
 

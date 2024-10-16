@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaGoogle, FaSpinner, FaMoon, FaSun } from "react-icons/fa";
 import Image from "next/image";
 import { dict } from "../../lib/dict";
@@ -8,38 +8,39 @@ import { useTheme } from "@/app/context/ThemeContext";
 import Link from "next/link";
 
 interface LoginFormProps {
-  onLoginSuccess: () => void;
-  onLoginFailure: (error: string) => void;
+  onLogin: (email: string, password: string) => void;
   onGoogleLogin: () => void;
+  loginResult: {status: string, message: string} | undefined;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({
-  onLoginSuccess,
-  onLoginFailure,
+  onLogin,
   onGoogleLogin,
+  loginResult,
 }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<'db' | 'google'| ''>();
+  const [result, setResult] = useState<{status: string, message: string}>();
   const { isDarkMode, toggleDarkMode } = useTheme();
   const selectedLanguage = "english";
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    setResult({status: '', message: ''})
+    setIsLoading('db');
+    if(!email || !password){
+      setIsLoading('');
+      return;
+    }
 
-    // Simulate login logic here
-    setTimeout(() => {
-      setIsLoading(false);
-
-      // Replace this with real authentication logic
-      if (email === "test@example.com" && password === "password") {
-        onLoginSuccess();
-      } else {
-        onLoginFailure("Invalid email or password");
-      }
-    }, 1500);
+    onLogin(email, password);
   };
+
+  useEffect(() => {
+    setResult(loginResult);
+    setIsLoading('');
+  }, [loginResult])
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
@@ -130,7 +131,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
               type="submit"
               className="w-full p-3 flex justify-center items-center bg-light-primary dark:bg-dark-primary text-white rounded-md hover:bg-light-secondary dark:hover:bg-dark-secondary transition-colors duration-300"
             >
-              {isLoading ? <FaSpinner className="animate-spin" /> : dict[selectedLanguage].login}
+              {isLoading === "db" ? <FaSpinner className="animate-spin" /> : dict[selectedLanguage].login}
             </button>
 
             {/* Continue with Google */}
@@ -139,11 +140,19 @@ const LoginForm: React.FC<LoginFormProps> = ({
               onClick={onGoogleLogin}
               className="w-full p-3 flex justify-center items-center bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors duration-300"
             >
-              <FaGoogle className="mr-2" />
-              {dict[selectedLanguage].continueWithGoogle}
+               {isLoading === 'google' ? (
+                <FaSpinner className="animate-spin" /> 
+              ) : (
+                <div className="flex flex-row">
+                  <FaGoogle className="mr-2 mt-1" />
+                  {dict[selectedLanguage].continueWithGoogle}
+                </div>
+              )}
             </button>
           </form>
-
+           {result && result.status === "fail" && (
+              <div className="mt-3 text-center text-lg text-light-primary dark:text-dark-primary">{dict[selectedLanguage].loginFailed}</div>
+            )}
           {/* Signup Link */}
           <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
             {dict[selectedLanguage].noAccount}{" "}

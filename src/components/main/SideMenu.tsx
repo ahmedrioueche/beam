@@ -10,20 +10,20 @@ import { User } from '@/lib/types';
 const users: User[] = [
   {
     id: 1,
-    name: 'User1',
-    isLive: true,
+    name: 'ChefAlice',
+    isLive: false,
     streams: [], // Add relevant Stream objects if necessary
-    avatarUrl: '/images/cat.jpg',
+    avatarUrl: '/images/alice.webp',
     createdAt: new Date().toISOString(), // Example date, you can adjust as needed
-    followersCount: 100, // Example value
-    viewsPerStreamCount: 50, // Example value
+    followersCount: 11200, // Example value
+    viewsPerStreamCount: 5000, // Example value
   },
   {
     id: 2,
-    name: 'User2',
-    isLive: false,
+    name: 'MusicianMike',
+    isLive: true,
     streams: [], // Add relevant Stream objects if necessary
-    avatarUrl: '/images/puppy.jpeg',
+    avatarUrl: '/images/mike.jpg',
     createdAt: new Date().toISOString(), // Example date, you can adjust as needed
     followersCount: 200, // Example value
     viewsPerStreamCount: 75, // Example value
@@ -34,20 +34,20 @@ const users: User[] = [
 const recommendedUsers: User[] = [
   {
     id: 1,
-    name: 'User1',
+    name: 'TeckGuy',
     isLive: true,
     streams: [], // Add relevant Stream objects if necessary
-    avatarUrl: '/images/cat.jpg',
+    avatarUrl: '/images/ike.jpg',
     createdAt: new Date().toISOString(), // Example date, you can adjust as needed
     followersCount: 100, // Example value
     viewsPerStreamCount: 50, // Example value
   },
   {
     id: 2,
-    name: 'User2',
-    isLive: false,
+    name: 'Gamer123',
+    isLive: true,
     streams: [], // Add relevant Stream objects if necessary
-    avatarUrl: '/images/puppy.jpeg',
+    avatarUrl: '/images/cat.jpg',
     createdAt: new Date().toISOString(), // Example date, you can adjust as needed
     followersCount: 200, // Example value
     viewsPerStreamCount: 75, // Example value
@@ -118,7 +118,7 @@ const Sidemenu = () => {
                   </div>
                   {isExpanded && (
                     <div onClick={() => handleClick(user.id)}>
-                      <span className="font-f2 mr-8">{user.name}</span>
+                      <span className="font-f2 mr-8 ml-2">{user.name}</span>
                       {user.isLive && (
                         <span className="bg-dark-secondary text-dark-text-primary text-xs px-1 rounded">LIVE</span>
                       )}
@@ -150,7 +150,7 @@ const Sidemenu = () => {
                   </div>
                   {isExpanded && (
                     <div onClick={() => handleClick(user.id)}>
-                      <span className="font-f2 mr-8">{user.name}</span>
+                      <span className="font-f2 mr-8 ml-2">{user.name}</span>
                       {user.isLive && (
                         <span className="bg-dark-secondary text-dark-text-primary text-xs px-1 rounded">{dict[selectedLanguage].liveCapital}</span>
                       )}

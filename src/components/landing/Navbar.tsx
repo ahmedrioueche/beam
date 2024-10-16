@@ -73,7 +73,7 @@ const Navbar = () => {
         <div className="text-3xl font-bold">
           <Link href="/" className="relative cursor-pointer flex flex-row items-center">
             <Image src={BeamLogo} alt={dict[selectedLanguage].logoAlt} className="h-10" height={40} width={40} />
-            <span className="text-lg ml-2 mt-1 font-f2 text-light-text-primary dark:text-dark-text-primary">{dict[selectedLanguage].logo}</span>
+            <span className="text-xl ml-2 mt-1 font-f2 text-light-text-primary dark:text-dark-text-primary">{dict[selectedLanguage].logo}</span>
           </Link>
         </div>
 

@@ -6,9 +6,10 @@ import { dict } from '@/lib/dict';
 interface StreamCardProps {
   stream: Stream;
   type: 'owner' | 'visitor'; // owner of the profile or just a visitor
+  noScaleOnHover?: boolean; //remove the hover effect when rendered as a live stream in profile
 }
 
-const StreamCard: React.FC<StreamCardProps> = ({ type, stream }) => {
+const StreamCard: React.FC<StreamCardProps> = ({ type, stream, noScaleOnHover }) => {
   const { thumbnail, streamer, title, info, isLive } = stream;
   const selectedLanguage = "english";
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -46,7 +47,7 @@ const StreamCard: React.FC<StreamCardProps> = ({ type, stream }) => {
   }, [isMenuOpen]);
   
   return (
-    <div className="relative flex flex-col p-4 hover:cursor-pointer border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg bg-light-surface dark:bg-dark-surface transition-all duration-300">
+    <div className={`relative flex flex-col p-4 hover:cursor-pointer ${noScaleOnHover? '' : 'hover:scale-105'  } border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg bg-light-surface dark:bg-dark-surface transition-all duration-300`}>
       {/* Thumbnail */}
       <img src={thumbnail} alt={title} className="w-full h-48 rounded-lg object-cover mb-2" />
 

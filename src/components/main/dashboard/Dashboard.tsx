@@ -1,5 +1,5 @@
 import React from 'react'
-import Stream from './Stream';
+import Stream from '../stream/Stream';
 
 const Dashboard: React.FC = () => {
   return (

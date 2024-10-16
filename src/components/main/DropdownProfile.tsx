@@ -1,5 +1,6 @@
 import { dict } from '@/lib/dict';
 import { User } from '@/lib/types';
+import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { FaTachometerAlt, FaSignOutAlt, FaCog, FaBell, FaExclamationCircle } from 'react-icons/fa';
@@ -33,6 +34,10 @@ const DropdownProfile = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
     router.push("/dashboard/stream");
   }
 
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: "/api/auth/signout" });
+  }
+    
   // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -129,7 +134,7 @@ const DropdownProfile = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
               </h3>
             </div>
           </div>
-          <div className="px-4 py-3 hover:bg-light-primary dark:hover:bg-dark-primary hover:text-dark-text-primary cursor-pointer">
+          <div onClick={handleLogout} className="px-4 py-3 hover:bg-light-primary dark:hover:bg-dark-primary hover:text-dark-text-primary cursor-pointer">
             <div className="flex items-center">
               <FaSignOutAlt className="mr-3 text-md " />
               <h3 className="text-md font-semibold ">

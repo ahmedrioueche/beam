@@ -26,7 +26,7 @@ const config: Config = {
           secondary: '#D5006D', // Cooler green for contrast on dark backgrounds
           background: '#1E1E24', // Dark gray for background
           foreground: '#E4E4EB', // Light gray for text on dark mode
-          surface: '#2C2C34', // Darker surface for cards, etc.
+          surface: '#20202C', // Darker surface for cards, etc.
           muted: '#a1a1aa', // Muted light gray for secondary text
           text: {
             primary: '#FCF5E5', //Parchment

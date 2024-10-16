@@ -1,19 +1,35 @@
 "use client"
+import Loading from '@/components/Loading';
 import AppFooter from '@/components/main/AppFooter';
 import AppNavbar from '@/components/main/AppNavbar';
-import Profile from '@/components/main/Profile';
+import Profile from '@/components/main/profile/Profile';
 import SideMenu from '@/components/main/SideMenu';
-import React from 'react'
+import SkeletonHome from '@/components/main/SkeletonHome';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react'
 
 interface PageProps {
-    params: {
-      id: string;
-    };
+  params: {
+    id: string;
+  };
 }
   
 const Page = ({ params }: PageProps) => {
   const { id } = params;  
-  return (
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/auth/login');
+    }
+ 
+  }, [status, router]);
+
+  if (status === 'loading') return <SkeletonHome/>;
+  if (!session) return <Loading />;
+
+  return session? (
     <div className="flex flex-col min-h-screen">
       {/* Navbar at the top */}
       <AppNavbar />
@@ -32,6 +48,8 @@ const Page = ({ params }: PageProps) => {
       {/* Footer remains at the bottom */}
       <AppFooter />
     </div>
+  ) : (
+    <Loading/>
   );
 }
 

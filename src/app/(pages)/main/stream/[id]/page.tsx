@@ -1,9 +1,13 @@
 "use client";
+import Loading from '@/components/Loading';
 import AppFooter from '@/components/main/AppFooter';
 import AppNavbar from '@/components/main/AppNavbar';
 import SideMenu from '@/components/main/SideMenu';
-import Stream from '@/components/main/Stream';
-import React from 'react';
+import SkeletonHome from '@/components/main/SkeletonHome';
+import Stream from '@/components/main/stream/Stream';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
 
 interface PageProps {
   params: {
@@ -13,7 +17,18 @@ interface PageProps {
 
 const Page = ({ params }: PageProps) => {
   const streamId = params.id;
-  return (
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/auth/login');
+    }
+ 
+  }, [status, router]);
+  if (status === 'loading') return <SkeletonHome/>;
+  if (!session) return <Loading />;
+
+  return session? (
     <div className="flex flex-col min-h-screen">
       {/* Navbar at the top */}
       <AppNavbar />
@@ -32,6 +47,8 @@ const Page = ({ params }: PageProps) => {
       {/* Footer remains at the bottom */}
       <AppFooter />
     </div>
+  ) : (
+    <Loading/>
   );
 }
 

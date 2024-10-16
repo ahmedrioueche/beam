@@ -1,34 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useTransition } from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { FaSpinner, FaTimes } from 'react-icons/fa';
-import CustomDropdown from './SelectDropDown';
+import CustomDropdown from '../SelectDropDown';
 import { dict } from '@/lib/dict';
+import { createIngress } from '@/actions/ingress';
+import { toast } from 'sonner'
+import { IngressInput } from 'livekit-server-sdk';
 
 interface GenerateConnectionModalProps {
   isOpen: boolean;
   onClose: () => void;
   onGenerateConnection: () => void;
 }
+const RTMP = String(IngressInput.RTMP_INPUT);
+const WHIP = String(IngressInput.WHIP_INPUT);
+type IngressType = typeof RTMP | typeof WHIP;
 
 const GenerateConnectionModal: React.FC<GenerateConnectionModalProps> = ({ isOpen, onClose, onGenerateConnection }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [connectionType, setConnectionType] = useState('RTMP');
+  const [connectionType, setConnectionType] = useState<IngressType>(RTMP);
+  const [isPending, startTransition] = useTransition();
   const selectedLanguage = "english";
 
-  const handleGenerate = () => {
+  const handleSubmit = () => {
     setIsLoading(true);
-    onGenerateConnection();
-    setTimeout(() => {
-      setIsLoading(false);
-      onClose();
-    }, 1000);
+    startTransition(() => {
+      createIngress(parseInt(connectionType))
+      .then(()=> toast.success('Connection created'))
+      .catch(()=> toast.error('Something went wrong'))
+    });
+    onClose();
   };
 
   if (!isOpen) return null;
 
   const connectionOptions = [
-    { value: 'RTMP', label: 'RTMP' },
-    { value: 'WHIP', label: 'WHIP' },
+    { value: RTMP, label: 'RTMP' },
+    { value: WHIP, label: 'WHIP' },
   ];
 
   return (
@@ -67,7 +75,7 @@ const GenerateConnectionModal: React.FC<GenerateConnectionModalProps> = ({ isOpe
             {dict[selectedLanguage].cancel}
           </button>
           <button
-            onClick={handleGenerate}
+            onClick={handleSubmit}
             className="px-4 py-2 text-white bg-dark-primary hover:bg-light-secondary dark:hover:bg-light-secondary rounded-md transition-colors duration-200"
             disabled={isLoading}
           >

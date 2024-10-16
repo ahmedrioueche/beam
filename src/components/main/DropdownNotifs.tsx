@@ -1,3 +1,4 @@
+import { dict } from '@/lib/dict';
 import { formatDateTime } from '@/lib/formater';
 import { Notif } from '@/lib/types';
 import { useEffect, useRef, useState } from 'react';
@@ -7,7 +8,7 @@ const DropdownNotifs = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [unreadCount, setUnreadCount] = useState(0);
   const [sortedNotifs, setSortedNotifs] = useState<any[]>([]);
-  
+  const selectedLanguage = "english";
   const notifications = [
     { id: 1, label: 'New comment on your post', onClick: () => alert('Clicked notification 1') },
     { id: 2, label: 'New follower', onClick: () => alert('Clicked notification 2') },
@@ -50,7 +51,7 @@ const DropdownNotifs = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
         className="absolute right-[-50px] mt-3 w-72 h-[32rem] bg-light-background dark:bg-dark-background border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg z-50 overflow-y-scroll scrollbar-hide">
         <div className="py-2">
             {sortedNotifs.length === 0 ? (
-              <p className="text-center text-light-text dark:text-dark-text">No notifications</p>
+              <p className="text-center text-light-text-primary dark:text-dark-text-primary">{dict[selectedLanguage].noNotification}</p>
             ) : (
               sortedNotifs.map((notif: any) => (
                 <div onClick={() => {handleNotifClick(notif)}}
